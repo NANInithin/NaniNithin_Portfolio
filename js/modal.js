@@ -63,12 +63,16 @@ export class Modal {
                 <h3 class="modal__subtitle">Tech Stack</h3>
                 <div class="modal__tags">${data.tags.map(t => `<span class="tag tag--accent">${t}</span>`).join('')}</div>
             </div>
-            ${data.github ? `
+            ${data.github || data.huggingface ? `
             <div class="modal__actions">
-                <a href="${data.github}" target="_blank" rel="noopener" class="btn btn--primary">
+                ${data.github ? `<a href="${data.github}" target="_blank" rel="noopener" class="btn btn--primary">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
                     View Repository
-                </a>
+                </a>` : ''}
+                ${data.huggingface ? `<a href="${data.huggingface}" target="_blank" rel="noopener" class="btn btn--outline" style="border-color:var(--accent-cyan);color:var(--accent-cyan);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1.5 14.5c-.828 0-1.5-.895-1.5-2s.672-2 1.5-2 1.5.895 1.5 2-.672 2-1.5 2zm3 0c-.828 0-1.5-.895-1.5-2s.672-2 1.5-2 1.5.895 1.5 2-.672 2-1.5 2zm-6.25-5a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm9.5 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg>
+                    View on HuggingFace
+                </a>` : ''}
             </div>` : ''}
         `;
 
@@ -105,7 +109,8 @@ export class Modal {
                     { value: '2.2B', label: 'Parameters', color: 'var(--accent-cyan)' }
                 ],
                 tags: ['SmolVLM2', 'QLoRA', 'PyTorch', 'Chain-of-Thought', 'PEFT', 'COCO', 'Transformers', 'CUDA 12.8'],
-                github: 'https://github.com/NANInithin/Compact-VLM'
+                github: 'https://github.com/NANInithin/Compact-VLM',
+                huggingface: 'https://huggingface.co/NANI-Nithin/SmolVLM-Hallucination-Defense'
             },
             'uav-detection': {
                 number: '02 — UAV VISION',

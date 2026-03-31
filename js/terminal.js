@@ -54,10 +54,9 @@ export class Terminal {
             { text: '', cls: 'blank' },
             { text: 'hardware:', cls: 'key' },
             { text: '  edge: [Jetson Nano, Jetson Xavier]', cls: 'nested' },
-            { text: '  gpu: [NVIDIA RTX 4060, CUDA 12.8]', cls: 'nested' },
             { text: '', cls: 'blank' },
             { text: 'programming:', cls: 'key' },
-            { text: '  languages: [Python, C++, MATLAB, Bash]', cls: 'nested' },
+            { text: '  languages: [Python, C, MATLAB]', cls: 'nested' },
             { text: '  data: [NumPy, Pandas, Scikit-learn]', cls: 'nested' },
         ];
 

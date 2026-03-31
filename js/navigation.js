@@ -1,6 +1,6 @@
 // ====================================
 // Scroll-based Navigation
-// Intersection Observer for reveals + nav dots
+// Neural Network Nav + Reveal Observer
 // ====================================
 
 import { throttle } from './utils.js';
@@ -8,11 +8,14 @@ import { throttle } from './utils.js';
 export class Navigation {
     constructor() {
         this.sections = document.querySelectorAll('.section');
-        this.navDots = document.querySelectorAll('.nav-dot');
+        this.navNodes = document.querySelectorAll('.nav-neural__node');
+        this.navGroups = document.querySelectorAll('.nav-neural__group');
+        this.navConnections = document.querySelectorAll('.nav-neural__connection[id]');
         this.currentSection = 'hero';
+        this.sectionIds = ['hero', 'portfolio', 'experience', 'console', 'contact'];
 
         this.initObserver();
-        this.initNavDots();
+        this.initNavClicks();
         this.initRevealObserver();
         this.initMetricCounters();
     }
@@ -28,7 +31,7 @@ export class Navigation {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     this.currentSection = entry.target.id;
-                    this.updateNavDots(entry.target.id);
+                    this.updateNav(entry.target.id);
                 }
             });
         }, options);
@@ -36,10 +39,10 @@ export class Navigation {
         this.sections.forEach((section) => observer.observe(section));
     }
 
-    initNavDots() {
-        this.navDots.forEach((dot) => {
-            dot.addEventListener('click', () => {
-                const sectionId = dot.dataset.section;
+    initNavClicks() {
+        this.navNodes.forEach((node) => {
+            node.addEventListener('click', () => {
+                const sectionId = node.dataset.section;
                 const section = document.getElementById(sectionId);
                 if (section) {
                     section.scrollIntoView({ behavior: 'smooth' });
@@ -48,9 +51,22 @@ export class Navigation {
         });
     }
 
-    updateNavDots(activeId) {
-        this.navDots.forEach((dot) => {
-            dot.classList.toggle('active', dot.dataset.section === activeId);
+    updateNav(activeId) {
+        const activeIdx = this.sectionIds.indexOf(activeId);
+
+        // Update nodes
+        this.navNodes.forEach((node) => {
+            node.classList.toggle('active', node.dataset.section === activeId);
+        });
+
+        // Update groups (for label visibility)
+        this.navGroups.forEach((group) => {
+            group.classList.toggle('active-group', group.dataset.section === activeId);
+        });
+
+        // Update connections - light up connections up to the active node
+        this.navConnections.forEach((conn, i) => {
+            conn.classList.toggle('active', i < activeIdx);
         });
     }
 
@@ -65,7 +81,6 @@ export class Navigation {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Don't unobserve — keep it
                 }
             });
         }, revealOptions);
@@ -108,20 +123,15 @@ export class Navigation {
             const animate = (currentTime) => {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-
-                // Ease out quart
                 const eased = 1 - Math.pow(1 - progress, 4);
                 const current = target * eased;
-
                 card.textContent = current.toFixed(decimals) + suffix;
-
                 if (progress < 1) {
                     requestAnimationFrame(animate);
                 } else {
                     card.textContent = target.toFixed(decimals) + suffix;
                 }
             };
-
             requestAnimationFrame(animate);
         });
     }
